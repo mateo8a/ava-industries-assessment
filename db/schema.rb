@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_09_232512) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_10_191805) do
   create_table "ava_admin_users", force: :cascade do |t|
     t.string "first_name"
     t.string "middle_name"
@@ -18,6 +18,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_09_232512) do
     t.string "password_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email"
+    t.index ["email"], name: "index_ava_admin_users_on_email", unique: true
   end
 
   create_table "clinic_members", force: :cascade do |t|
@@ -31,7 +33,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_09_232512) do
     t.integer "clinic_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email"
     t.index ["clinic_id"], name: "index_clinic_members_on_clinic_id"
+    t.index ["email"], name: "index_clinic_members_on_email", unique: true
   end
 
   create_table "clinics", force: :cascade do |t|
