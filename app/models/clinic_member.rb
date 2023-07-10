@@ -1,0 +1,2 @@
+class ClinicMember < ApplicationRecord
+end

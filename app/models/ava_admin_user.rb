@@ -1,0 +1,2 @@
+class AvaAdminUser < ApplicationRecord
+end

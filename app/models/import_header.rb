@@ -1,0 +1,2 @@
+class ImportHeader < ApplicationRecord
+end

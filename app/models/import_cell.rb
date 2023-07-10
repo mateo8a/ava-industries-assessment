@@ -1,0 +1,2 @@
+class ImportCell < ApplicationRecord
+end

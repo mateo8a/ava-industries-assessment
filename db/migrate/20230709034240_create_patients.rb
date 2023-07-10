@@ -1,11 +1,11 @@
 class CreatePatients < ActiveRecord::Migration[7.0]
   def change
     create_table :patients do |t|
-      t.integer   :health_identifier_number
-      t.string    :health_identifier_province
-      t.string    :first_name,                  null: :false
+      t.integer   :health_identifier_number, null: :false
+      t.string    :health_identifier_province, null: :false
+      t.string    :first_name, null: :false
       t.string    :middle_name
-      t.string    :last_name,                   null: :false
+      t.string    :last_name, null: :false
       t.integer   :phone
       t.string    :email
       t.string    :address_one
