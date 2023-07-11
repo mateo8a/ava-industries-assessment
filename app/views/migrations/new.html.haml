@@ -1,3 +1,13 @@
 %h1 New migration
 
-%p Start by uploading your CSV file:
+%div Start by uploading your CSV file:
+- if @migration.errors.any?
+  %ul
+    - @migration.errors.full_messages.each do |m|
+      %li
+        = m
+= form_with(model: @migration) do |f|
+  = f.label :name
+  = f.text_field :name, placeholder: "Migration name..."
+  = f.file_field :csv_file, accept: 'text/csv', text: "Choose CSV file"
+  = f.submit "Start migration"
