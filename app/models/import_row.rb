@@ -1,7 +1,7 @@
 class ImportRow < ApplicationRecord
   belongs_to :migration
   has_many :import_cells
-  enum :migration_status, [:pending, :accepted, :rejected]
+  after_save :mark_as_read_only_if_necessary
   scope :pending_valid, -> { where(invalid_data: false, conflicts_with_existing_patient: false, migration_status: 0) }
 
   def self.pending_non_valid
@@ -10,14 +10,40 @@ class ImportRow < ApplicationRecord
       .where(migration_status: 0)
   end
 
+  enum :migration_status, [:pending, :accepted, :rejected]
+  delegate :clinic, to: :migration, allow_nil: false
+
+  INVALID_WARNING_TYPE = "invalid"
+  CONFLICT_WARNING_TYPE = "conflict"
+
   def add_invalid_warning(warning)
     self.invalid_data = true
-    add_warning("invalid", warning)
+    add_warning(INVALID_WARNING_TYPE, warning)
   end
 
   def add_conflict_warning
     self.conflicts_with_existing_patient = true
-    add_warning("conflict", warning)
+    add_warning(CONFLICT_WARNING_TYPE, warning)
+  end
+
+  def parsed_warnings
+    @parsed_warnings = JSON.parse(warnings)
+  end
+
+  def mark_as_read_only_if_necessary
+    unless pending?
+      self.readonly!
+      import_cells.each { |c| c.readonly! }
+    end
+  end
+
+  def import
+    self.accepted!
+    create_patient_record
+  end
+
+  def create_patient_record
+    clinic.patients.create
   end
 
   private
@@ -30,9 +56,5 @@ class ImportRow < ApplicationRecord
     end
     self.warnings = @parsed_warnings.to_json
     self.save!
-  end
-
-  def parsed_warnings
-    @parsed_warnings = JSON.parse(warnings)
   end
 end

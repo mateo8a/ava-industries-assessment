@@ -29,7 +29,17 @@ class MigrationsController < ApplicationController
   end
 
   def update
-    @migration.create_import_data(params[:headers]) if params[:headers]
+    case @migration.status 
+    when :assigning_headers
+      @migration.create_import_data(params[:headers]) if params[:headers]
+    when :in_progress
+      rows_to_import = params[:rows_to_import].each do |row_id, to_import|
+        next if to_import != "1"
+        import_row = @migration.import_rows.find(row_id.to_i)
+        import_row.import
+      end
+      debugger
+    end
     redirect_to @migration
   end
 

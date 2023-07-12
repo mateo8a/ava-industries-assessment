@@ -13,6 +13,8 @@ class ImportCell < ApplicationRecord
       validate_on_health_identifier_number
     when :health_identifier_province, :address_province
       validate_and_convert_province_code
+    when :first_name, :last_name
+      validate_name
     when :phone
       validate_phone_number
     when :email
@@ -55,6 +57,14 @@ class ImportCell < ApplicationRecord
         import_row.add_invalid_warning(province_attr) unless provinces_hash[raw_data.downcase]
       end
     end
+  end
+
+  def validate_name
+    if raw_data.nil?
+      import_row.add_invalid_warning(import_header.patient_attribute)
+      return
+    end
+    self.raw_data = raw_data.titleize
   end
 
   def validate_email
@@ -103,9 +113,11 @@ class ImportCell < ApplicationRecord
   end
 
   def validate_sex
-    sex = raw_data.upcase
-    import_row.add_invalid_warning("sex") unless ["M", "F"].include? sex
-    self.raw_data = sex
+    if !["M", "F", "m", "f"].include?(raw_data)
+      import_row.add_invalid_warning("sex") 
+      return
+    end
+    self.raw_data = raw_data.upcase
     # self.save! if self.changed?
   end
 
