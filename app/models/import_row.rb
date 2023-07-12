@@ -89,6 +89,10 @@ class ImportRow < ApplicationRecord
     self.save!
   end
 
+  def reject
+    self.rejected!
+  end
+
   private
 
   def add_warning(type, warning)

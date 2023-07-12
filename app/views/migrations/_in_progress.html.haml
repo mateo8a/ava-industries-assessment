@@ -35,6 +35,7 @@
     %table
       %tr
         %th Import record
+        %th Reject record
         - ImportHeader.all.each do |import_header|
           %th
             = import_header.patient_attribute.humanize
@@ -43,12 +44,14 @@
         %tr
           %td
             = check_box_tag("rows_to_import[#{import_row.id}]", "1", true)
+          %td
+            = check_box_tag("rows_to_reject_valid[#{import_row.id}]", "1", false)
           - import_header_ids.each do |import_header_id|
             - cell = import_row.import_cells.find_by(import_header_id: import_header_id)
             %td 
               = cell.raw_data
     
-    = f.submit "Import selected records"
+    = f.submit "Import and reject selected records"
 %div
   %h2 Accepted records
   %table

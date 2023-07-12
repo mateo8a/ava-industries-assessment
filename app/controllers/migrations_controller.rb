@@ -33,17 +33,21 @@ class MigrationsController < ApplicationController
     when :assigning_headers
       @migration.create_import_data(params[:headers]) if params[:headers]
     when :in_progress
-      rows_to_import = params[:rows_to_import].each do |row_id, to_import|
-        next if to_import != "1" # import only those with checked checkbox
-        import_row = @migration.import_rows.find(row_id.to_i)
-        import_row.import
-      end
-      # rows_to_import = params[:rows_to_reject].each do |row_id, to_import|
+      act_on_row(params, :rows_to_import) { |row| row.import }
+      act_on_row(params, :rows_to_reject_valid){ |row| row.reject }
     end
     redirect_to @migration
   end
 
-  private 
+  private
+
+  def act_on_row(params, rows_key)
+    params[rows_key]&.each do |row_id, act_on|
+      next if act_on != "1" # import only those with checked checkbox
+      import_row = @migration.import_rows.find(row_id)
+      yield import_row
+    end
+  end
 
   def find_migration
     @migration = current_user.migrations.find(params[:id])
