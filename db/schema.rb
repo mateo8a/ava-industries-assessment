@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_11_204544) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_12_050343) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -115,6 +115,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_11_204544) do
     t.integer "migration_status", default: 0
     t.boolean "conflicts_with_existing_patient", default: false
     t.boolean "invalid_data", default: false
+    t.string "warnings", default: "{}"
+    t.index ["conflicts_with_existing_patient"], name: "index_import_rows_on_conflicts_with_existing_patient"
+    t.index ["invalid_data"], name: "index_import_rows_on_invalid_data"
     t.index ["migration_id"], name: "index_import_rows_on_migration_id"
   end
 
