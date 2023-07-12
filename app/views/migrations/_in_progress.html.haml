@@ -1,10 +1,28 @@
 %div
+  This migration has:
+
+%div
   %h2 Pending rows
 
   %h3 Rows with issues
+  %table
+    %tr
+      - ImportHeader.all.each do |import_header|
+        %th
+          = import_header.patient_attribute.humanize
+      
+    - import_header_ids = ImportHeader.ids
+
+    - @migration.import_rows.pending_non_valid.each do |import_row|
+      %tr
+        - import_header_ids.each do |import_header_id|
+          - cell = import_row.import_cells.find_by(import_header_id: import_header_id)
+          %td 
+            = cell.raw_data
+
 
   %h3 Valid rows - ready to be imported!
-
+  - @migration.import_rows.pending_valid
 %div
   %h2 Accepted rows
 

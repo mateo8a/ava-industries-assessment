@@ -10,4 +10,11 @@ module MigrationsHelper
     options_for_select = options_for_select(option_tags, selected_option)
     select_tag("headers[header_#{column}]".to_sym, options_for_select)
   end
+
+  def rows_with_issues(migration)
+  end
+
+  def show_import_row(migration, row)
+    
+  end
 end

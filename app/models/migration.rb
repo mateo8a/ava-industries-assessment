@@ -38,22 +38,23 @@ class Migration < ApplicationRecord
     create_import_rows
   end
 
+  def headers_hash
+    JSON.parse(self.import_headers_order)
+  end
+
   private
 
   def create_import_rows
-    import_headers_order = JSON.parse(self.import_headers_order)
     csv_file.parsed_csv_file.each_with_index do |csv_row, i|
       next if i == 0
       import_row = import_rows.create!
       csv_row.each_with_index do |csv_cell, j|
-        import_header_id = import_headers_order[j.to_s]
+        import_header_id = headers_hash[j.to_s]
         import_cell = import_row.import_cells.create!(migration: self, import_header_id: import_header_id.to_i, raw_data: csv_cell)
         import_cell.check_if_valid_data
       end
     end
   end
-
-  
 
   def assign_headers(headers)
     updated_headers = {}
