@@ -8,6 +8,6 @@ module MigrationsHelper
 
     selected_option = import_headers_order[column.to_s]
     options_for_select = options_for_select(option_tags, selected_option)
-    select_tag("header_#{column}".to_sym, options_for_select)
+    select_tag("headers[header_#{column}]".to_sym, options_for_select)
   end
 end

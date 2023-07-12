@@ -22,22 +22,44 @@ class Migration < ApplicationRecord
     self.save!
   end
 
-  def csv_preview
-    csv_file.csv_preview
-  end
-
   def status
     rows = import_rows.order(:migration_status)
     if !rows.any?
       :assigning_headers
-    elsif rows.first.migration_status == :pending
+    elsif rows.first.migration_status == "pending"
       :in_progress
     else
       :completed
     end
   end
 
+  def create_import_data(headers)
+    assign_headers(headers)
+    create_import_rows
+  end
+
   private
+
+  def create_import_rows
+    import_headers_order = JSON.parse(self.import_headers_order)
+    csv_file.parsed_csv_file.each_with_index do |csv_row, i|
+      next if i == 0
+      import_row = import_rows.create!
+      csv_row.each_with_index do |csv_cell, j|
+        import_header_id = import_headers_order[j.to_s]
+        import_row.import_cells.create!(migration: self, import_header_id: import_header_id.to_i)
+      end
+    end
+  end
+
+  def assign_headers(headers)
+    updated_headers = {}
+    csv_file.number_of_columns.times do |c|
+      updated_headers[c] = headers["header_#{c}"]
+    end
+    self.import_headers_order = updated_headers.to_json
+    self.save!
+  end
 
   def import_header_matcher_for(header)
     search_friendly_header = header.dup

@@ -1,4 +1,5 @@
 class MigrationsController < ApplicationController
+  before_action :find_migration, only: [:show, :update]
   def new
     @migration = current_user.migrations.build
   end
@@ -11,8 +12,8 @@ class MigrationsController < ApplicationController
       csv_file_wrapper = @migration.build_csv_file
       @migration.set_import_headers_order(raw_csv_string)
       if csv_file_wrapper.save
-        debugger
         csv_file_wrapper.file.attach uploaded_csv_file
+        csv_file_wrapper.set_attributes_from_file
         redirect_to @migration
       else
         flash.now[:danger] = "CSV could not be created"
@@ -25,13 +26,18 @@ class MigrationsController < ApplicationController
   end
 
   def show
-    @migration = current_user.migrations.find(params[:id])
   end
 
   def update
+    @migration.create_import_data(params[:headers]) if params[:headers]
+    redirect_to @migration
   end
 
   private 
+
+  def find_migration
+    @migration = current_user.migrations.find(params[:id])
+  end
 
   def create_migration_params
     params.require(:migration).permit(:name)

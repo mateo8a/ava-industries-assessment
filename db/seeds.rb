@@ -18,7 +18,7 @@
   address_province: [:address_province],
   address_city: [:address_city],
   address_postal_code: [:address_postal_code],
-  birthday: [:birthday, :date_of_birth],
+  date_of_birth: [:birthday, :date_of_birth],
   sex: [:sex],
 }.each do |patient_attr, parsed_csv_headers|
   import_header = ImportHeader.create!(patient_attribute: patient_attr)

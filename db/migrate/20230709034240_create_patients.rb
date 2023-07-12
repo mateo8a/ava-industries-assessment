@@ -13,7 +13,7 @@ class CreatePatients < ActiveRecord::Migration[7.0]
       t.string    :address_province
       t.string    :address_city
       t.string    :address_postal_code
-      t.date      :birthday
+      t.date      :date_of_birth
       t.string    :sex
 
       t.timestamps

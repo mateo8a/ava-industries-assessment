@@ -6,28 +6,7 @@
   = link_to @migration.csv_file.file_blob.filename, rails_blob_path(@migration.csv_file.file, disposition: 'attachment')
 
 - if @migration.status == :assigning_headers
-  = form_with(model: @migration) do |f|
-    
-    %div
-      = f.label :description
-      = f.text_area :description
-      = f.label :notes
-      = f.text_area :notes
-    
-    %div
-      %h3 Assign headers to the imported data columns
-      
-      %table
-        %tr
-          - ImportHeader.count.times do |i|
-            %td
-              = select_tag_generator(@migration, i)
-        %tr
-          %th H1
-          %th H2
-          %th H3
-        %tr
-          %td one
-          %td two
-          %td three
+  = render 'migrations/assign_headers'
 
+- elsif @migration.status == :in_progress
+  = render 'migrations/in_progress'

@@ -114,7 +114,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_11_204544) do
     t.datetime "updated_at", null: false
     t.integer "migration_status", default: 0
     t.boolean "conflicts_with_existing_patient", default: false
-    t.boolean "invalid", default: false
+    t.boolean "invalid_data", default: false
     t.index ["migration_id"], name: "index_import_rows_on_migration_id"
   end
 
@@ -145,7 +145,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_11_204544) do
     t.string "address_province"
     t.string "address_city"
     t.string "address_postal_code"
-    t.date "birthday"
+    t.date "date_of_birth"
     t.string "sex"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
