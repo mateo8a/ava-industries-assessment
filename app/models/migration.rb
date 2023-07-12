@@ -11,7 +11,7 @@ class Migration < ApplicationRecord
   before_validation :set_clinic_association
   validates :name, presence: true
 
-  def set_import_headers_order(raw_csv_string)
+  def guess_import_headers_order(raw_csv_string)
     import_headers_order = {}
     headers_row = parsed_csv_file(raw_csv_string)[0]
     headers_row.each_with_index do |header, index|
@@ -48,10 +48,19 @@ class Migration < ApplicationRecord
     csv_file.parsed_csv_file.each_with_index do |csv_row, i|
       next if i == 0
       import_row = import_rows.create!
+      import_header_ids = ImportHeader.ids
       csv_row.each_with_index do |csv_cell, j|
-        import_header_id = headers_hash[j.to_s]
-        import_cell = import_row.import_cells.create!(migration: self, import_header_id: import_header_id.to_i, raw_data: csv_cell)
+        import_header_id = headers_hash[j.to_s].to_i
+        next if import_header_id == 0
+        import_cell = import_row.import_cells.create!(migration: self, import_header_id: import_header_id, raw_data: csv_cell)
         import_cell.check_if_valid_data
+        import_header_ids.delete(import_header_id)
+      end
+      if import_header_ids.any?
+        import_header_ids.each do |import_header_id|
+          import_cell = import_row.import_cells.create!(migration: self, import_header_id: import_header_id, raw_data: nil)
+          import_cell.check_if_valid_data
+        end
       end
     end
   end
@@ -67,8 +76,7 @@ class Migration < ApplicationRecord
 
   def import_header_matcher_for(header)
     search_friendly_header = header.dup
-    search_friendly_header.lstrip!
-    search_friendly_header.rstrip!
+    search_friendly_header.strip!
     search_friendly_header.downcase!
     search_friendly_header.gsub!(" ", "_")
     ImportHeaderMatcher.find_by(parsed_csv_header: search_friendly_header)

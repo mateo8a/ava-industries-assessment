@@ -10,7 +10,7 @@ class MigrationsController < ApplicationController
       uploaded_csv_file = params[:migration][:csv_file]
       raw_csv_string = uploaded_csv_file.read
       csv_file_wrapper = @migration.build_csv_file
-      @migration.set_import_headers_order(raw_csv_string)
+      @migration.guess_import_headers_order(raw_csv_string)
       if csv_file_wrapper.save
         csv_file_wrapper.file.attach uploaded_csv_file
         csv_file_wrapper.set_attributes_from_file
@@ -38,7 +38,6 @@ class MigrationsController < ApplicationController
         import_row = @migration.import_rows.find(row_id.to_i)
         import_row.import
       end
-      debugger
     end
     redirect_to @migration
   end

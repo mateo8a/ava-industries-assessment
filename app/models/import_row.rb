@@ -43,7 +43,17 @@ class ImportRow < ApplicationRecord
   end
 
   def create_patient_record
-    clinic.patients.create
+    new_patient_attr = {}
+    Patient::ASSIGNABLE_ATTRIBUTES.each do |attr|
+      new_patient_attr[attr] = data_for(attr)
+    end
+    clinic.patients.create!(new_patient_attr)
+  end
+
+  def data_for(patient_attribute)
+    import_header_id = ImportHeader.where(patient_attribute: patient_attribute).pluck(:id)
+    cell = import_cells.find_by(import_header_id: import_header_id)
+    cell.raw_data
   end
 
   private
