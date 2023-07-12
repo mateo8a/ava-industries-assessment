@@ -1,5 +1,6 @@
 class ImportRow < ApplicationRecord
   belongs_to :migration
+  belongs_to :patient, optional: true
   has_many :import_cells
   after_save :mark_as_read_only_if_necessary
   scope :pending_valid, -> { where(invalid_data: false, conflicts_with_existing_patient: false, migration_status: 0) }
@@ -38,8 +39,8 @@ class ImportRow < ApplicationRecord
   end
 
   def import
-    self.accepted!
     create_patient_record
+    self.accepted!
   end
 
   def create_patient_record
@@ -47,7 +48,9 @@ class ImportRow < ApplicationRecord
     Patient::ASSIGNABLE_ATTRIBUTES.each do |attr|
       new_patient_attr[attr] = data_for(attr)
     end
-    clinic.patients.create!(new_patient_attr)
+    patient = clinic.patients.build(new_patient_attr)
+    patient.import_row = self
+    patient.save!
   end
 
   def data_for(patient_attribute)

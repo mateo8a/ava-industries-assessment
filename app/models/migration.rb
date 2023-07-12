@@ -5,7 +5,7 @@ class Migration < ApplicationRecord
   belongs_to :clinic_member
   has_many :import_rows
   has_many :import_cells
-  has_many :patients
+  has_many :patients, through: :import_rows
   has_one :csv_file
 
   before_validation :set_clinic_association

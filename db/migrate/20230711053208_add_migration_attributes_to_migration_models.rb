@@ -10,6 +10,6 @@ class AddMigrationAttributesToMigrationModels < ActiveRecord::Migration[7.0]
     add_column :migrations, :notes, :text
 
     add_reference :patients, :patient_replaced_by, foreign_key: { to_table: :patients }
-    add_reference :patients, :migration, foreign_key: true
+    add_reference :import_rows, :patient, foreign_key: true
   end
 end

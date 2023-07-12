@@ -115,10 +115,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_12_050343) do
     t.integer "migration_status", default: 0
     t.boolean "conflicts_with_existing_patient", default: false
     t.boolean "invalid_data", default: false
+    t.integer "patient_id"
     t.string "warnings", default: "{}"
     t.index ["conflicts_with_existing_patient"], name: "index_import_rows_on_conflicts_with_existing_patient"
     t.index ["invalid_data"], name: "index_import_rows_on_invalid_data"
     t.index ["migration_id"], name: "index_import_rows_on_migration_id"
+    t.index ["patient_id"], name: "index_import_rows_on_patient_id"
   end
 
   create_table "migrations", force: :cascade do |t|
@@ -154,11 +156,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_12_050343) do
     t.datetime "updated_at", null: false
     t.integer "clinic_id", null: false
     t.integer "patient_replaced_by_id"
-    t.integer "migration_id"
     t.index ["clinic_id"], name: "index_patients_on_clinic_id"
     t.index ["email"], name: "index_patients_on_email"
     t.index ["health_identifier_number", "health_identifier_province"], name: "index_patients_on_health_identifier_number_and_province", unique: true
-    t.index ["migration_id"], name: "index_patients_on_migration_id"
     t.index ["patient_replaced_by_id"], name: "index_patients_on_patient_replaced_by_id"
     t.index ["phone"], name: "index_patients_on_phone"
   end
@@ -172,9 +172,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_12_050343) do
   add_foreign_key "import_cells", "migrations"
   add_foreign_key "import_header_matchers", "import_headers"
   add_foreign_key "import_rows", "migrations"
+  add_foreign_key "import_rows", "patients"
   add_foreign_key "migrations", "clinic_members"
   add_foreign_key "migrations", "clinics"
   add_foreign_key "patients", "clinics"
-  add_foreign_key "patients", "migrations"
   add_foreign_key "patients", "patients", column: "patient_replaced_by_id"
 end

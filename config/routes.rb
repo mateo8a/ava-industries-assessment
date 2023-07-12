@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   delete 'logout', to: 'sessions#destroy'
 
   resources :doctors, only: [:show]
+  resources :patients, only: [:show]
   resources :migrations, only: [:new, :create, :show, :update]
   resources :import_rows, only: [:edit, :update]
 
