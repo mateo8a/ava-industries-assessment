@@ -34,10 +34,11 @@ class MigrationsController < ApplicationController
       @migration.create_import_data(params[:headers]) if params[:headers]
     when :in_progress
       rows_to_import = params[:rows_to_import].each do |row_id, to_import|
-        next if to_import != "1"
+        next if to_import != "1" # import only those with checked checkbox
         import_row = @migration.import_rows.find(row_id.to_i)
         import_row.import
       end
+      # rows_to_import = params[:rows_to_reject].each do |row_id, to_import|
     end
     redirect_to @migration
   end

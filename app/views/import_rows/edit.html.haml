@@ -1,1 +1,22 @@
 %h1 Edit import row
+
+%p 
+  Go back to 
+  = link_to "migration", migration_path(@import_row.migration)
+
+- unless @import_row.warnings == "{}"
+  The data in this record has issues.
+  = formatted_warnings(@import_row)
+
+= form_with(model: @import_row, scope: :row_data) do |f|
+  %table
+    - ImportHeader.all.each do |import_header|
+      - cell = @import_row.import_cells.find_by(import_header_id: import_header.id)
+      - name = import_header.patient_attribute
+      %tr
+        %td
+          = label_tag(name)
+        %td
+          = cell_text_tag(name, cell.raw_data)
+  
+  = f.submit "Update import row"

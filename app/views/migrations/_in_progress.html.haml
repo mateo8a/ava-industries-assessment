@@ -4,7 +4,8 @@
 %div
   %h2 Pending records
 
-  %h3 Records with issues
+  %h3 Records with issues 
+  -# Create form for rejection of these records
   %table
     %tr
       %th Warnings
@@ -13,14 +14,15 @@
         %th
           = import_header.patient_attribute.humanize
       
-    - import_header_ids = ImportHeader.ids
-
     - @migration.import_rows.pending_non_valid.each do |import_row|
       %tr
         %td
           = formatted_warnings(import_row)
         %td
-          = link_to "Edit record", edit_import_row_path(import_row)
+          - if import_row.editable?
+            = link_to "Edit record", edit_import_row_path(import_row)
+          - else
+            This record cannot be edited because the field(s) with issues cannot be edited.
         - import_header_ids.each do |import_header_id|
           - cell = import_row.import_cells.find_by(import_header_id: import_header_id)
           %td 
@@ -28,6 +30,7 @@
 
 
   %h3 Valid records - ready to be imported!
+  -# Add rejection column
   = form_with(model: @migration) do |f|
     %table
       %tr
@@ -36,8 +39,6 @@
           %th
             = import_header.patient_attribute.humanize
         
-      - import_header_ids = ImportHeader.ids
-
       - @migration.import_rows.pending_valid.each do |import_row|
         %tr
           %td

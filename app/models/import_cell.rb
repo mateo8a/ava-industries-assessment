@@ -2,9 +2,17 @@ class ImportCell < ApplicationRecord
   belongs_to :migration
   belongs_to :import_row
   belongs_to :import_header
-  # before_save :check_if_valid_data
+  after_save :check_if_valid_data, unless: :skip_valid_data_callback
 
   delegate :clinic, to: :migration, allow_nil: false
+  delegate :patient_attribute, to: :import_header
+
+  def self.get_by_patient_attr(patient_attribute)
+    import_header_id = ImportHeader.where(patient_attribute: patient_attribute).pluck(:id)
+    find_by(import_header_id: import_header_id)
+  end
+
+  attr_accessor :skip_valid_data_callback
 
   def check_if_valid_data
     self.raw_data = raw_data&.strip
@@ -28,7 +36,9 @@ class ImportCell < ApplicationRecord
     when :sex
       validate_sex
     end
+    self.skip_valid_data_callback = true
     self.save! if self.changed?
+    self.skip_valid_data_callback = false
   end
 
   private 
@@ -49,12 +59,13 @@ class ImportCell < ApplicationRecord
       if raw_data.length == 2
         if provinces_hash.values.include?(raw_data.upcase)
           self.raw_data = raw_data.upcase
-          self.save!
+          # self.save!
         else
           import_row.add_invalid_warning(province_attr) 
         end
       else
         import_row.add_invalid_warning(province_attr) unless provinces_hash[raw_data.downcase]
+        self.raw_data = raw_data.titleize
       end
     end
   end

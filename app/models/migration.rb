@@ -53,13 +53,13 @@ class Migration < ApplicationRecord
         import_header_id = headers_hash[j.to_s].to_i
         next if import_header_id == 0
         import_cell = import_row.import_cells.create!(migration: self, import_header_id: import_header_id, raw_data: csv_cell)
-        import_cell.check_if_valid_data
+        # import_cell.check_if_valid_data
         import_header_ids.delete(import_header_id)
       end
       if import_header_ids.any?
         import_header_ids.each do |import_header_id|
           import_cell = import_row.import_cells.create!(migration: self, import_header_id: import_header_id, raw_data: nil)
-          import_cell.check_if_valid_data
+          # import_cell.check_if_valid_data
         end
       end
     end

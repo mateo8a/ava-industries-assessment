@@ -16,13 +16,20 @@ class ImportRow < ApplicationRecord
 
   INVALID_WARNING_TYPE = "invalid"
   CONFLICT_WARNING_TYPE = "conflict"
+  CANNOT_EDIT = [
+    :health_identifier_number,
+    :health_identifier_province,
+    :first_name,
+    :middle_name,
+    :last_name,
+  ]
 
   def add_invalid_warning(warning)
     self.invalid_data = true
     add_warning(INVALID_WARNING_TYPE, warning)
   end
 
-  def add_conflict_warning
+  def add_conflict_warning(warning)
     self.conflicts_with_existing_patient = true
     add_warning(CONFLICT_WARNING_TYPE, warning)
   end
@@ -57,6 +64,29 @@ class ImportRow < ApplicationRecord
     import_header_id = ImportHeader.where(patient_attribute: patient_attribute).pluck(:id)
     cell = import_cells.find_by(import_header_id: import_header_id)
     cell.raw_data
+  end
+
+  def editable?
+    editable = true
+    parsed_warnings[INVALID_WARNING_TYPE]&.each do |attr_with_issues|
+      if CANNOT_EDIT.include?(attr_with_issues.to_sym)
+        editable = false
+        break
+      end
+    end
+    editable = false if parsed_warnings[CONFLICT_WARNING_TYPE]&.any?
+    editable
+  end
+
+  def get_cell_for_patient_attr(attr)
+    import_cells.get_by_patient_attr(attr)
+  end
+
+  def reset_warnings
+    self.warnings = {}
+    self.invalid_data = false
+    self.conflicts_with_existing_patient = false
+    self.save!
   end
 
   private
