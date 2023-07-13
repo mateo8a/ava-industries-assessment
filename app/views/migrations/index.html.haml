@@ -1,1 +1,5 @@
-%h1 List of all the clinic's migrations
+%h1 
+  List of all migrations for
+  = current_clinic.name.titleize
+
+= render 'migrations/index_table', migrations: @migrations

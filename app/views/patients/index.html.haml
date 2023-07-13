@@ -1,1 +1,36 @@
-%h1 List of all the clinic's patients
+%h1 
+  List of all patients at 
+  = current_clinic.name.titleize
+
+%table
+  %tr
+    %th Profile
+    %th First Name
+    %th Last Name
+    %th Health Identifier Number
+    %th Health Identifier Province
+    %th Email
+    %th Date of Birth
+    %th Sex
+    %th Imported from migration
+  - current_clinic.patients.each do |p|
+    %tr
+      %td
+        = link_to "Patient's profile", p
+      %td
+        = p.first_name
+      %td
+        = p.last_name
+      %td
+        = p.health_identifier_number
+      %td
+        = p.health_identifier_province
+      %td
+        = p.email
+      %td
+        = p.date_of_birth
+      %td
+        = p.sex
+      %td
+        - if migration = p.migration
+          = link_to "Migration", migration

@@ -1,5 +1,6 @@
-%h1
-  Migration show page
+%h1.outermost-element#migration-show-header
+  Page for migration:
+  = @migration.name.titleize
 
 = render 'migrations/header'
 

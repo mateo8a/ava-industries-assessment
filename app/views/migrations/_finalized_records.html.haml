@@ -1,38 +1,45 @@
-%div
-  %h2 Accepted records
-  - accepted_records = @migration.import_rows.accepted
-  - if accepted_records.any?
-    %table
-      %tr
-        %th See patient's profile
-        - ImportHeader.all.each do |import_header|
-          %th
-            = import_header.patient_attribute.humanize
-      
-      - accepted_records.each do |import_row|
-        %tr
-          %td
-            = link_to "Patient's profile", patient_path(import_row.patient)
-          - import_header_ids.each do |import_header_id|
-            %td 
-              = cell_data(import_row, import_header_id)
-  - else
-    None
+.outermost-element#finalized-records
+  %div
+    .table-title-flex.finalized-table-title
+      %span.accepted-circle
+      %h2 Accepted records
+    - accepted_records = @migration.import_rows.accepted
+    - if accepted_records.any?
+      .parent-of-table
+        %table
+          %tr
+            %th See patient's profile
+            - ImportHeader.all.each do |import_header|
+              %th
+                = import_header.patient_attribute.humanize
+          
+          - accepted_records.each do |import_row|
+            %tr
+              %td
+                = link_to "Patient's profile", patient_path(import_row.patient)
+              - import_header_ids.each do |import_header_id|
+                %td 
+                  = cell_data(import_row, import_header_id)
+    - else
+      None
 
-%div
-  %h2 Rejected records
-  - rejected_records = @migration.import_rows.rejected
-  - if rejected_records.any?
-    %table
-      %tr
-        - ImportHeader.all.each do |import_header|
-          %th
-            = import_header.patient_attribute.humanize
-      
-      - rejected_records.each do |import_row|
-        %tr
-          - import_header_ids.each do |import_header_id|
-            %td 
-              = cell_data(import_row, import_header_id)
-  - else
-    None
+  %div
+    .table-title-flex.finalized-table-title
+      %span.rejected-circle
+      %h2 Rejected records
+    - rejected_records = @migration.import_rows.rejected
+    - if rejected_records.any?
+      .parent-of-table
+        %table
+          %tr
+            - ImportHeader.all.each do |import_header|
+              %th
+                = import_header.patient_attribute.humanize
+          
+          - rejected_records.each do |import_row|
+            %tr
+              - import_header_ids.each do |import_header_id|
+                %td 
+                  = cell_data(import_row, import_header_id)
+    - else
+      None

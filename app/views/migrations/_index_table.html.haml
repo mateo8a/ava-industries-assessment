@@ -1,0 +1,31 @@
+%table
+  %tr
+    %th Migration
+    %th Status
+    %th Created by
+    %th Created at
+    %th Total records
+    %th Pending valid records
+    %th Pending invalid records
+    %th Accepted records
+    %th Rejected records
+  - migrations.each do |m|
+    %tr
+      %td
+        = link_to m.name, migration_path(m)
+      %td
+        = m.status.to_s.humanize
+      %td
+        = link_to m.clinic_member.name, m.clinic_member
+      %td
+        = m.created_at.to_fs(:db)
+      %td
+        = m.import_rows.count
+      %td
+        = m.import_rows.pending_valid.count
+      %td
+        = m.import_rows.pending_non_valid.count
+      %td
+        = m.import_rows.accepted.count
+      %td
+        = m.import_rows.rejected.count

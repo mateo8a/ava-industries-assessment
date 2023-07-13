@@ -27,4 +27,8 @@ class Patient < ApplicationRecord
     :date_of_birth,
     :sex,
   ]
+
+  def name
+    first_name + " " + last_name
+  end
 end

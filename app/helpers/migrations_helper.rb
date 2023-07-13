@@ -20,7 +20,6 @@ module MigrationsHelper
     conflict_warnings = warnings_hash[ImportRow::CONFLICT_WARNING_TYPE]
     
     if invalid_warnings&.count && invalid_warnings&.count > 0
-      warning_string += "There are issues with the following field(s): "
       warnings_hash[ImportRow::INVALID_WARNING_TYPE].each do |field|
         warnings_to_concat << "#{field.humanize}"
       end
@@ -28,7 +27,7 @@ module MigrationsHelper
     end
     
     if conflict_warnings&.count && conflict_warnings&.count > 0
-      warning_string += "This record conflicts with an existing record"
+      warning_string += "Conflicts with existing record"
     end
 
     return warning_string

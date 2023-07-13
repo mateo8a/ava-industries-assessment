@@ -1,12 +1,51 @@
+$font: Georgia;
+$font-color: #222222;
+
 body {
-  background: linear-gradient(to left, #b6fbff, #83a4d4);
-  font-family: Georgia;
+  background: linear-gradient(to left, #b1f6f9, #779bd0);
+  font-family: $font, serif;
+  color: $font-color;
   padding-bottom: 20px;
-  padding-right: 30px;
-  padding-left: 30px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+}
+
+h1 {
+  letter-spacing: 0.6px;
+}
+
+input[type=submit] {
+  margin: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 1.2em;
+  font-family: Georgia, serif;
+}
+
+$table-border: #2d7258;
+
+table {
+  border-collapse: collapse;
+  box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.15);
+  font-size: 1em;
+  text-align: center;
+  th, td {
+    padding: 5px 7.5px;
+    border: 1px solid $table-border;
+    min-width: 90px;
+  }
+}
+
+.outermost-element {
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 #main-header {
+  background: linear-gradient(to left, #7459b9, #83d4b5);
+  border-bottom-style: double;
+  padding-bottom: 20px;
   #title {
     display: flex;
     align-items: center;
@@ -29,3 +68,135 @@ body {
   }
 }
 
+#migration-info {
+  display: flex;
+  flex-direction: column;
+  div {
+    padding-bottom: 20px;
+    font-size: 1.2em;
+  }
+}
+
+// #migration-statistics {
+//   margin-bottom: 30px;
+// }
+
+$migration-border: #2d7258;
+$migration-border-thickness: 1.5px;
+
+#migration-statistics {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  padding: 0;
+  border: 1px solid $migration-border;
+  width: 725px;
+}
+
+#total-record-stats, #pending-record-stats {
+  border-right: $migration-border-thickness dashed $migration-border;
+}
+
+#total-record-stats {
+  width: 130px;
+}
+
+.stat-main-title {
+  border-bottom: $migration-border-thickness dashed $migration-border;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  div {
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+}
+
+#migration-stats-total-records {
+  padding-top: 15px;
+}
+
+
+.stat-main-col {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.parent-of-table {
+  overflow-x: scroll;
+}
+
+#pending-records {
+  border-top: 1px dashed $font-color;
+  padding-top: 10px;
+  padding-bottom: 15px;
+}
+
+#finalized-records {
+  border-top: 1px dashed $font-color;
+}
+
+.finalized-table-title {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+@mixin status-circle($color, $radius) {
+  height: $radius;
+  width: $radius;
+  background-color: $color;
+  border-radius: 50%;
+  display: inline;
+  margin-right: 10px;
+  box-shadow: 0 0 4px 3px $color;
+}
+
+.pending-circle {
+  @include status-circle($color: #ddd763, $radius: 20px);
+}
+
+.issues-circle {
+  @include status-circle($color: #e22727, $radius: 10px);
+}
+
+.valid-circle {
+  @include status-circle($color: #3fd01f, $radius: 10px);
+}
+
+.accepted-circle {
+  @include status-circle($color: #191cef, $radius: 20px);
+}
+
+.rejected-circle {
+  @include status-circle($color: #050720, $radius: 20px);
+}
+
+.table-title-flex {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  max-height: 50px;
+}
+
+#new-migration-from-member {
+  font-size: 1.2em;
+  padding-bottom: 25px;
+}
+
+.show-patient-table {
+  box-shadow: none;
+  font-size: 1em;
+  text-align: left;
+  th, td {
+    padding: 5px 7.5px;
+    border: none;
+    min-width: 90px;
+  } 
+}
