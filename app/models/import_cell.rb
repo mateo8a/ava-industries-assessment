@@ -44,7 +44,7 @@ class ImportCell < ApplicationRecord
   private 
 
   def validate_on_health_identifier_number
-    if raw_data.nil? || (raw_data.to_i == 0)
+    if raw_data.empty? || (raw_data.to_i == 0)
       import_row.add_invalid_warning("health_identifier_number")
     elsif migration.clinic.patients.find_by(health_identifier_number: raw_data.to_i)
       import_row.add_conflict_warning("health_identifier_number")
@@ -53,7 +53,7 @@ class ImportCell < ApplicationRecord
 
   def validate_and_convert_province_code
     def province_attr = import_header.patient_attribute
-    if raw_data.nil?
+    if raw_data.empty?
       import_row.add_invalid_warning(province_attr)
     else
       if raw_data.length == 2
@@ -71,7 +71,7 @@ class ImportCell < ApplicationRecord
   end
 
   def validate_name
-    if raw_data.nil?
+    if raw_data.empty?
       import_row.add_invalid_warning(import_header.patient_attribute)
       return
     end
@@ -84,7 +84,7 @@ class ImportCell < ApplicationRecord
   end
 
   def validate_phone_number
-    return if raw_data.nil?
+    return if raw_data.empty?
     phone_number = raw_data.gsub("-", "")
     phone_regex = /\A1\d{10}\z|\A\d{10}\z/
     if phone_regex =~ phone_number
@@ -96,15 +96,18 @@ class ImportCell < ApplicationRecord
   end
 
   def validate_city
-    return if raw_data.nil?
+    return if raw_data.empty?
     self.raw_data = raw_data.capitalize
     # self.save!
   end
 
   def validate_postal_code
     postal_code = raw_data
-    return if postal_code.nil?
-    import_row.add_invalid_warning("address_postal_code") if (postal_code.length < 6 || postal_code.length > 7)
+    return if postal_code.empty?
+    if (postal_code.length < 6 || postal_code.length > 7)
+      import_row.add_invalid_warning("address_postal_code") 
+      return
+    end
     postal_code = postal_code.insert(3, " ") if postal_code.length == 6
     postal_code = postal_code.upcase
     postal_code_regex = /\A[A-Z]\d[A-Z][ -]?\d[A-Z]\d\z/
@@ -114,7 +117,7 @@ class ImportCell < ApplicationRecord
   end
 
   def validate_date_of_birth
-    if raw_data.nil?
+    if raw_data.empty?
       import_row.add_invalid_warning("date_of_birth")
       return
     end
