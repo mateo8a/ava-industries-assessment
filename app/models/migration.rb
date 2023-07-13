@@ -67,8 +67,15 @@ class Migration < ApplicationRecord
 
   def assign_headers(headers)
     updated_headers = {}
+    duplicates = []
     csv_file.number_of_columns.times do |c|
-      updated_headers[c] = headers["header_#{c}"]
+      import_header_id = headers["header_#{c}"]
+      updated_headers[c] = import_header_id
+      if duplicates.include?(import_header_id)
+        raise StandardError.new("Cannot assign the same import header to two different columns")
+      elsif import_header_id != ""
+        duplicates << import_header_id
+      end
     end
     self.import_headers_order = updated_headers.to_json
     self.save!
