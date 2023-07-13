@@ -15,4 +15,14 @@ module ApplicationHelper
       "#{'%.2f' % time} s"
     end
   end
+
+  def current_clinic
+    current_user.clinic
+  end
+
+  def show_svg(path)
+    File.open("app/assets/images/#{path}", "rb") do |file|
+      raw file.read
+    end
+  end  
 end

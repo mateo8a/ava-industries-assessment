@@ -1,11 +1,21 @@
-%header
-  %div
-    %h1 Migration app
-  - if current_user
-    = link_to "See my profile (#{current_user.name})", current_user
-    = link_to "Migrations", migrations_path
-    = link_to "Patients", patients_path
-
-    = link_to "Log out", logout_path, data: { turbo_method: :delete }
-  - else
-    = link_to "Log in", login_path
+#main-header
+  #title
+    %span#logo
+      = show_svg('cross.svg')
+    %h1 
+      Ava Industries Migration App
+      - if current_clinic
+        = " - " + current_clinic.name.titleize 
+  #main-header-items
+    - if current_user
+      .main-header-item
+        = link_to "See my profile (#{current_user.name})", current_user
+      .main-header-item
+        = link_to "Migrations", migrations_path
+      .main-header-item
+        = link_to "Patients", patients_path
+      .main-header-item#logout-item
+        = link_to "Log out", logout_path, data: { turbo_method: :delete }
+    - else
+      .main-header-item
+        = link_to "Log in", login_path

@@ -1,0 +1,31 @@
+body {
+  background: linear-gradient(to left, #b6fbff, #83a4d4);
+  font-family: Georgia;
+  padding-bottom: 20px;
+  padding-right: 30px;
+  padding-left: 30px;
+}
+
+#main-header {
+  #title {
+    display: flex;
+    align-items: center;
+    #logo {
+      display: inline-block;
+      height: 50px;
+      width: 50px;
+      padding-right: 10px;
+    }
+  }
+  #main-header-items {
+    display: flex;
+    letter-spacing: 2px;
+    .main-header-item {
+      padding-right: 20px;
+    }
+    #logout-item {
+      margin-left: auto;
+    }
+  }
+}
+
