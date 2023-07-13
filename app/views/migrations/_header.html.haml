@@ -23,11 +23,11 @@
   -# = render 'migrations/text_fields'
 
 - if @migration.status == :assigning_headers
-  %h4 CSV file info:
-  %div
-    The uploaded CSV file has
-    = @migration.csv_file.number_of_rows
-    rows.
+  .outermost-element
+    #parsed-rows-number
+      The uploaded CSV file has
+      = @migration.csv_file.number_of_rows
+      rows.
     
 
 - else

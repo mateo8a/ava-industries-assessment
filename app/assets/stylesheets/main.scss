@@ -1,5 +1,9 @@
 $font: Georgia;
 $font-color: #222222;
+$csv-upload-form: #2d7258;
+$table-border: #2d7258;
+$migration-border: #2d7258;
+$migration-border-thickness: 1.5px;
 
 body {
   background: linear-gradient(to left, #b1f6f9, #779bd0);
@@ -23,8 +27,6 @@ input[type=submit] {
   font-family: Georgia, serif;
 }
 
-$table-border: #2d7258;
-
 table {
   border-collapse: collapse;
   box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.15);
@@ -35,6 +37,18 @@ table {
     border: 1px solid $table-border;
     min-width: 90px;
   }
+  select {
+    background-color: #10015c;
+    color: #d1d7d7;
+    padding: 10px;
+    margin: 0;
+    text-align: center;
+    font-size: 1.2em;
+  }
+}
+
+#no-header-option {
+  background-color: #e22727;
 }
 
 .outermost-element {
@@ -77,12 +91,26 @@ table {
   }
 }
 
-// #migration-statistics {
-//   margin-bottom: 30px;
-// }
+$parsed-rows-number: #e17a7a;
+$header-assignment-info: #552eb8;
 
-$migration-border: #2d7258;
-$migration-border-thickness: 1.5px;
+#parsed-rows-number {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-size: 1.3em;
+  font-weight: 600;
+  color: #4d2626;
+  background-color: $parsed-rows-number;
+  text-align: center;
+  border: 2px solid $header-assignment-info;
+}
+
+.header-assignment-info {
+  font-size: 1.2em;
+  padding: 30px;
+  background-color: $header-assignment-info;
+  color: #d1d7d7;
+}
 
 #migration-statistics {
   text-align: center;
@@ -185,7 +213,7 @@ $migration-border-thickness: 1.5px;
   max-height: 50px;
 }
 
-#new-migration-from-member {
+.new-migration-from-member {
   font-size: 1.2em;
   padding-bottom: 25px;
 }
@@ -199,4 +227,28 @@ $migration-border-thickness: 1.5px;
     border: none;
     min-width: 90px;
   } 
+}
+
+#csv-upload-form {
+  width: 400px;
+  background-color: $csv-upload-form;
+  border-radius: 5%;
+  box-shadow: 0 0 1px 1px $csv-upload-form;
+}
+
+#csv-upload-prompt {
+  margin-bottom: 20px;
+}
+
+.csv-form-element {
+  color: white;
+  padding: 15px;
+}
+
+#csv-submit {
+  text-align: center;
+}
+
+input[type=text] {
+  min-width: 200px;
 }

@@ -1,13 +1,17 @@
-%h1 New migration
+.outermost-element
+  %h1 New migration
 
-%div Start by uploading your CSV file:
-- if @migration.errors.any?
-  %ul
-    - @migration.errors.full_messages.each do |m|
-      %li
-        = m
-= form_with(model: @migration) do |f|
-  = f.label :name
-  = f.text_field :name, placeholder: "Migration name..."
-  = f.file_field :csv_file, accept: 'text/csv', text: "Choose CSV file"
-  = f.submit "Start migration"
+  #csv-upload-prompt Start by uploading your CSV file:
+  - if @migration.errors.any?
+    %ul
+      - @migration.errors.full_messages.each do |m|
+        %li
+          = m
+  = form_with(model: @migration, id: "csv-upload-form") do |f|
+    .csv-form-element#text-input
+      = f.label :name, "Name your migration: "
+      = f.text_field :name, placeholder: "Migration name..."
+    .csv-form-element#file-upload
+      = f.file_field :csv_file, accept: 'text/csv'
+    .csv-form-element#csv-submit
+      = f.submit "Start migration"

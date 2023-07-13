@@ -1,5 +1,9 @@
-%h1 
-  List of all migrations for
-  = current_clinic.name.titleize
+.outermost-element
+  %h1 
+    List of all migrations for
+    = current_clinic.name.titleize
 
-= render 'migrations/index_table', migrations: @migrations
+  .new-migration-from-member
+    = link_to "New migration", new_migration_path
+
+  = render 'migrations/index_table', migrations: @migrations

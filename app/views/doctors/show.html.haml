@@ -6,7 +6,7 @@
   %h2
     My migrations
   
-  #new-migration-from-member
+  .new-migration-from-member
     = link_to "New migration", new_migration_path
 
   = render 'migrations/index_table', migrations: current_user.migrations

@@ -2,9 +2,9 @@ module MigrationsHelper
   def select_tag_generator(migration, column)
     import_headers_order = JSON.parse(migration.import_headers_order)
     option_tags = []
-    option_tags << ["Select corresponding header...", nil]
+    option_tags << ["Select header...", nil, id: "no-header-option"]
     ImportHeader.all.each do |h|
-      option_tags << [h.patient_attribute.to_s.gsub("_", " "), h.id]
+      option_tags << [h.patient_attribute.to_s.gsub("_", " ").capitalize, h.id]
     end
 
     selected_option = import_headers_order[column.to_s]

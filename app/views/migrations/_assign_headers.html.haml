@@ -1,31 +1,33 @@
 - csv_file = @migration.csv_file
 
-%div
-  You must assign the correct headers to each column so that the data can be parsed correctly.
-  The following table is a preview of the uploaded CSV file. 
-  A few rows are shown to help you decide what header corresponds to each column.
-  Some headers might have been automatically assigned based on the name of the column headers in the 
-  uploaded CSV file.
+.outermost-element
+  .header-assignment-info
+    You must assign the correct headers to each column so that the data can be parsed correctly.
+    The following table is a preview of the uploaded CSV file. 
+    A few rows are shown to help you decide what header corresponds to each column.
+    Some headers might have been automatically assigned based on the name of the column headers in the 
+    uploaded CSV file.
 
-= form_with(model: @migration) do |f|
-  
-  %div
-    %h3 Assign headers to the imported data columns
+  = form_with(model: @migration) do |f|
     
-    %table
-      %tr
-        - csv_file.number_of_columns.times do |i|
-          %td
-            = select_tag_generator(@migration, i)
-      - CSV.parse(csv_file.preview_rows).each_with_index do |r, i|
-        %tr
-          - r.each do |d|
-            - if i == 0 # header row 
-              %th
-                = d
-            - else
+    %div
+      %h3 Assign headers to the imported data columns
+      
+      .parent-of-table
+        %table
+          %tr
+            - csv_file.number_of_columns.times do |i|
               %td
-                = d
-  
-  %div
-    = f.submit "Confirm headers"
+                = select_tag_generator(@migration, i)
+          - CSV.parse(csv_file.preview_rows).each_with_index do |r, i|
+            %tr
+              - r.each do |d|
+                - if i == 0 # header row 
+                  %th
+                    = d
+                - else
+                  %td
+                    = d
+    
+    %div
+      = f.submit "Confirm headers"

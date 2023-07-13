@@ -11,7 +11,6 @@ class ImportRowsController < ApplicationController
       value = value.empty? ? nil : value 
       cell.raw_data = value
       cell.save!
-      # cell.check_if_valid_data
     end
     redirect_to @import_row.migration
   end

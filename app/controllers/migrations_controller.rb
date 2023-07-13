@@ -23,11 +23,9 @@ class MigrationsController < ApplicationController
         @migration.set_parsing_time(initial_time)
         redirect_to @migration
       else
-        flash.now[:danger] = "CSV could not be created"
         render 'new', status: :unprocessable_entity
       end
     else
-      flash.now[:danger] = "Migration did not save"
       render 'new', status: :unprocessable_entity
     end
   end
