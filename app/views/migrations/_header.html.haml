@@ -12,10 +12,10 @@
   = @migration.created_at.to_fs(:db)
 %div
   Time taken to parse the CSV:
-  = "#{@migration.statistics_hash["parsing_time"]} s"
+  = show_time_stat(@migration, "parsing_time")
 %div
   Time taken so far to import records:
-  = "#{@migration.statistics_hash["import_time"]} s"
+  = show_time_stat(@migration, "import_time")
 %div 
   The original CSV:
   = link_to @migration.csv_file.file_blob.filename, rails_blob_path(@migration.csv_file.file, disposition: 'attachment')

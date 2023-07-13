@@ -1,54 +1,58 @@
 %div
   %h2 Pending records
 
-  %h3 Records with issues 
-  = form_with(model: @migration) do |f|
-    %table
-      %tr
-        %th Reject record
-        %th Warnings
-        %th Modify the record
-        - ImportHeader.all.each do |import_header|
-          %th
-            = import_header.patient_attribute.humanize
-        
-      - @migration.import_rows.pending_non_valid.each do |import_row|
+  - pending_non_valid = @migration.import_rows.pending_non_valid
+  - if pending_non_valid.any?
+    %h3 Records with issues 
+    = form_with(model: @migration) do |f|
+      %table
         %tr
-          %td
-            = check_box_tag("rows_to_reject[#{import_row.id}]", "1", false)
-          %td
-            = formatted_warnings(import_row)
-          %td
-            - if import_row.editable?
-              = link_to "Edit record", edit_import_row_path(import_row)
-            - else
-              This record cannot be edited because the field(s) with issues cannot be edited.
-          - import_header_ids.each do |import_header_id|
-            %td 
-              = cell_data(import_row, import_header_id)
-              
-    = f.submit "Reject selected records"
+          %th Reject record
+          %th Warnings
+          %th Modify the record
+          - ImportHeader.all.each do |import_header|
+            %th
+              = import_header.patient_attribute.humanize
+          
+        - pending_non_valid.each do |import_row|
+          %tr
+            %td
+              = check_box_tag("rows_to_reject[#{import_row.id}]", "1", false)
+            %td
+              = formatted_warnings(import_row)
+            %td
+              - if import_row.editable?
+                = link_to "Edit record", edit_import_row_path(import_row)
+              - else
+                This record cannot be edited because the field(s) with issues cannot be edited.
+            - import_header_ids.each do |import_header_id|
+              %td 
+                = cell_data(import_row, import_header_id)
+                
+      = f.submit "Reject selected records"
 
-  %h3 Valid records - ready to be imported!
-  = form_with(model: @migration) do |f|
-    %table
-      %tr
-        %th Import record
-        %th Reject record
-        - ImportHeader.all.each do |import_header|
-          %th
-            = import_header.patient_attribute.humanize
-        
-      - @migration.import_rows.pending_valid.each do |import_row|
+  - pending_valid = @migration.import_rows.pending_valid
+  - if pending_valid.any?
+    %h3 Valid records - ready to be imported!
+    = form_with(model: @migration) do |f|
+      %table
         %tr
-          %td
-            = check_box_tag("rows_to_import[#{import_row.id}]", "1", true)
-          %td
-            = check_box_tag("rows_to_reject[#{import_row.id}]", "1", false)
-          - import_header_ids.each do |import_header_id|
-            %td 
-              = cell_data(import_row, import_header_id)
-    
-    = f.submit "Import and reject selected records"
+          %th Import record
+          %th Reject record
+          - ImportHeader.all.each do |import_header|
+            %th
+              = import_header.patient_attribute.humanize
+          
+        - pending_valid.each do |import_row|
+          %tr
+            %td
+              = check_box_tag("rows_to_import[#{import_row.id}]", "1", true)
+            %td
+              = check_box_tag("rows_to_reject[#{import_row.id}]", "1", false)
+            - import_header_ids.each do |import_header_id|
+              %td 
+                = cell_data(import_row, import_header_id)
+      
+      = f.submit "Import and reject selected records"
 
 = render 'migrations/finalized_records'

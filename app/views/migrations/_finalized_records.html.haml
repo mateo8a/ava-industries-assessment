@@ -1,30 +1,38 @@
 %div
   %h2 Accepted records
-  %table
-    %tr
-      %th See patient's profile
-      - ImportHeader.all.each do |import_header|
-        %th
-          = import_header.patient_attribute.humanize
-    
-    - @migration.import_rows.accepted.each do |import_row|
+  - accepted_records = @migration.import_rows.accepted
+  - if accepted_records.any?
+    %table
       %tr
-        %td
-          = link_to "Patient's profile", patient_path(import_row.patient)
-        - import_header_ids.each do |import_header_id|
-          %td 
-            = cell_data(import_row, import_header_id)
+        %th See patient's profile
+        - ImportHeader.all.each do |import_header|
+          %th
+            = import_header.patient_attribute.humanize
+      
+      - accepted_records.each do |import_row|
+        %tr
+          %td
+            = link_to "Patient's profile", patient_path(import_row.patient)
+          - import_header_ids.each do |import_header_id|
+            %td 
+              = cell_data(import_row, import_header_id)
+  - else
+    None
 
 %div
   %h2 Rejected records
-  %table
-    %tr
-      - ImportHeader.all.each do |import_header|
-        %th
-          = import_header.patient_attribute.humanize
-    
-    - @migration.import_rows.rejected.each do |import_row|
+  - rejected_records = @migration.import_rows.rejected
+  - if rejected_records.any?
+    %table
       %tr
-        - import_header_ids.each do |import_header_id|
-          %td 
-            = cell_data(import_row, import_header_id)
+        - ImportHeader.all.each do |import_header|
+          %th
+            = import_header.patient_attribute.humanize
+      
+      - rejected_records.each do |import_row|
+        %tr
+          - import_header_ids.each do |import_header_id|
+            %td 
+              = cell_data(import_row, import_header_id)
+  - else
+    None
