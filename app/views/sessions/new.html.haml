@@ -1,7 +1,11 @@
-%h1 Log in
-= form_with(url: login_path, scope: :session) do |f|
-  = f.label :email
-  = f.email_field :email
-  = f.label :password
-  = f.password_field :password
-  = f.submit "Log in"
+.login-page
+  %h1 Log in
+  = form_with(url: login_path, scope: :session) do |f|
+    #log_in_fields
+      #text-input
+        = f.label :email
+        = f.email_field :email
+      #text-input
+        = f.label :password
+        = f.password_field :password
+      = f.submit "Log in"

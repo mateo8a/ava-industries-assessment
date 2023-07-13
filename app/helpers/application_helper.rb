@@ -17,6 +17,6 @@ module ApplicationHelper
   end
 
   def current_clinic
-    current_user.clinic
+    current_user&.clinic
   end
 end
