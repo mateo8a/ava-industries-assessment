@@ -1,5 +1,10 @@
 class MigrationsController < ApplicationController
   before_action :find_migration, only: [:show, :update]
+
+  def index
+    @migrations = current_clinic.migrations
+  end
+
   def new
     @migration = current_user.migrations.build
   end
@@ -29,7 +34,7 @@ class MigrationsController < ApplicationController
   end
 
   def update
-    case @migration.status 
+    case @migration.status
     when :assigning_headers
       @migration.create_import_data(params[:headers]) if params[:headers]
     when :in_progress
@@ -50,7 +55,7 @@ class MigrationsController < ApplicationController
   end
 
   def find_migration
-    @migration = current_user.migrations.find(params[:id])
+    @migration = current_clinic.migrations.find(params[:id])
   end
 
   def create_migration_params

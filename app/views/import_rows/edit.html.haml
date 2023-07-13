@@ -11,12 +11,12 @@
 = form_with(model: @import_row, scope: :row_data) do |f|
   %table
     - ImportHeader.all.each do |import_header|
-      - cell = @import_row.import_cells.find_by(import_header_id: import_header.id)
+      - cell_data = cell_data(@import_row, import_header.id)
       - name = import_header.patient_attribute
       %tr
         %td
           = label_tag(name)
         %td
-          = cell_text_tag(name, cell.raw_data)
+          = cell_text_tag(name, cell_data)
   
   = f.submit "Update import row"

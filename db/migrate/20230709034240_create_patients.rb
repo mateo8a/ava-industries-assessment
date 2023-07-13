@@ -18,8 +18,6 @@ class CreatePatients < ActiveRecord::Migration[7.0]
 
       t.timestamps
 
-      t.index [:health_identifier_number, :health_identifier_province], unique: true, 
-        name: :index_patients_on_health_identifier_number_and_province
       t.index :phone 
       t.index :email
     end

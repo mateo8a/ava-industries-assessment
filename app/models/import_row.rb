@@ -61,8 +61,7 @@ class ImportRow < ApplicationRecord
   end
 
   def data_for(patient_attribute)
-    import_header_id = ImportHeader.where(patient_attribute: patient_attribute).pluck(:id)
-    cell = import_cells.find_by(import_header_id: import_header_id)
+    cell = get_cell_for_patient_attr(patient_attribute)
     cell.raw_data
   end
 

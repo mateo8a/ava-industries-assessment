@@ -1,0 +1,11 @@
+%div
+  This migration's status is:
+  = @migration.status.to_s.humanize.downcase
+
+%div 
+  The original CSV:
+  = link_to @migration.csv_file.file_blob.filename, rails_blob_path(@migration.csv_file.file, disposition: 'attachment')
+
+- unless @migration.status == :assigning_headers
+  %div
+    %h4 Migration statistics:

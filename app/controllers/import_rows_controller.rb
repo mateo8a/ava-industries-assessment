@@ -8,6 +8,7 @@ class ImportRowsController < ApplicationController
     @import_row.save!
     params[:row_data].each do |attr, value|
       cell = @import_row.get_cell_for_patient_attr(attr)
+      value = value.empty? ? nil : value 
       cell.raw_data = value
       cell.save!
       # cell.check_if_valid_data
@@ -16,6 +17,6 @@ class ImportRowsController < ApplicationController
   end
 
   def find_import_row
-    @import_row = current_user.clinic.import_rows.find(params[:id])
+    @import_row = current_clinic.import_rows.find(params[:id])
   end
 end

@@ -156,9 +156,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_12_050343) do
     t.datetime "updated_at", null: false
     t.integer "clinic_id", null: false
     t.integer "patient_replaced_by_id"
+    t.index ["clinic_id", "health_identifier_number", "health_identifier_province"], name: "index_patients_on_clinic_h_identifier_number_and_province", unique: true
     t.index ["clinic_id"], name: "index_patients_on_clinic_id"
     t.index ["email"], name: "index_patients_on_email"
-    t.index ["health_identifier_number", "health_identifier_province"], name: "index_patients_on_health_identifier_number_and_province", unique: true
     t.index ["patient_replaced_by_id"], name: "index_patients_on_patient_replaced_by_id"
     t.index ["phone"], name: "index_patients_on_phone"
   end
