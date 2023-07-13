@@ -1,0 +1,30 @@
+%div
+  %h2 Accepted records
+  %table
+    %tr
+      %th See patient's profile
+      - ImportHeader.all.each do |import_header|
+        %th
+          = import_header.patient_attribute.humanize
+    
+    - @migration.import_rows.accepted.each do |import_row|
+      %tr
+        %td
+          = link_to "Patient's profile", patient_path(import_row.patient)
+        - import_header_ids.each do |import_header_id|
+          %td 
+            = cell_data(import_row, import_header_id)
+
+%div
+  %h2 Rejected records
+  %table
+    %tr
+      - ImportHeader.all.each do |import_header|
+        %th
+          = import_header.patient_attribute.humanize
+    
+    - @migration.import_rows.rejected.each do |import_row|
+      %tr
+        - import_header_ids.each do |import_header_id|
+          %td 
+            = cell_data(import_row, import_header_id)
