@@ -1,0 +1,8 @@
+%div
+  = form_with(model: @migration) do |f|
+    = f.label :description
+    = f.text_area :description
+    = f.label :notes
+    = f.text_area :notes
+
+    = f.submit "Update description and notes"

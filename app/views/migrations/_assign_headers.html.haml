@@ -1,12 +1,13 @@
 - csv_file = @migration.csv_file
 
+%div
+  You must assign the correct headers to each column so that the data can be parsed correctly.
+  The following table is a preview of the uploaded CSV file. 
+  A few rows are shown to help you decide what header corresponds to each column.
+  Some headers might have been automatically assigned based on the name of the column headers in the 
+  uploaded CSV file.
+
 = form_with(model: @migration) do |f|
-    
-  %div
-    = f.label :description
-    = f.text_area :description
-    = f.label :notes
-    = f.text_area :notes
   
   %div
     %h3 Assign headers to the imported data columns

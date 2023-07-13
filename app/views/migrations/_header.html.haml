@@ -1,11 +1,52 @@
+%div 
+  Migration name:
+  = @migration.name
 %div
-  This migration's status is:
+  Migration status:
   = @migration.status.to_s.humanize.downcase
-
+%div
+  Migration initiated by:
+  = @migration.clinic_member.name
+%div
+  Migration created at:
+  = @migration.created_at.to_fs(:db)
 %div 
   The original CSV:
   = link_to @migration.csv_file.file_blob.filename, rails_blob_path(@migration.csv_file.file, disposition: 'attachment')
 
-- unless @migration.status == :assigning_headers
+= render 'migrations/text_fields'
+
+- if @migration.status == :assigning_headers
+  %h4 CSV file info:
+  %div
+    The uploaded CSV file has
+    = @migration.csv_file.number_of_rows
+    rows.
+    
+
+- else
   %div
     %h4 Migration statistics:
+    %table
+      %tr
+        %th
+          Total records
+        %th
+          Valid records
+        %th
+          Records with issues
+        %th
+          Imported records
+        %th
+          Rejected records
+      %tr
+        %td
+          = @migration.import_rows.count
+        %td
+          = @migration.import_rows.pending_valid.count
+        %td
+          = @migration.import_rows.pending_non_valid.count
+        %td
+          = @migration.import_rows.accepted.count
+        %td
+          = @migration.import_rows.rejected.count
