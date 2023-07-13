@@ -1,7 +1,7 @@
 .outermost-element
   %h1 
     Welcome, 
-    = current_user.first_name
+    = @user.first_name
 
   %h2
     My migrations
@@ -9,4 +9,4 @@
   .new-migration-from-member
     = link_to "New migration", new_migration_path
 
-  = render 'migrations/index_table', migrations: current_user.migrations
+  = render 'migrations/index_table', migrations: @user.migrations
