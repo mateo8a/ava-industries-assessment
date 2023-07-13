@@ -14,8 +14,8 @@
     %table
       %tr
         %th Patient attribute
-        %th Attribute value
-        %th Original value (can never be edited)
+        %th Current value
+        %th Original value in CSV (can never be edited)
       - ImportHeader.all.each do |import_header|
         - cell_data = cell_data(@import_row, import_header.id, false)
         - name = import_header.patient_attribute

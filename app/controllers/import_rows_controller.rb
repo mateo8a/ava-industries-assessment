@@ -1,5 +1,6 @@
 class ImportRowsController < ApplicationController
-  before_action :find_import_row, only: [:edit, :update]
+  before_action :find_import_row, only: [:edit, :update, :show]
+
   def edit
   end
 
@@ -13,6 +14,12 @@ class ImportRowsController < ApplicationController
       cell.save!
     end
     redirect_to @import_row.migration
+  end
+
+  def show
+    if @import_row.patient.nil?
+      redirect_to @import_row.migration
+    end
   end
 
   def find_import_row

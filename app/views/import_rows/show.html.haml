@@ -1,0 +1,26 @@
+.outermost-element
+
+  #show-import-row 
+    %h1 Import row information
+    %div
+      %div
+        From migration:
+        = link_to @import_row.migration.name, @import_row.migration  
+      %div
+        For patient:
+        = link_to @import_row.patient.name, @import_row.patient
+  %table
+    %tr
+      %th Patient attribute
+      %th Imported value
+      %th Original value in CSV
+    - ImportHeader.all.each do |import_header|
+      - cell_data = cell_data(@import_row, import_header.id, false)
+      - name = import_header.patient_attribute
+      %tr
+        %td
+          = label_tag(name)
+        %td
+          = cell_data[0]
+        %td
+          = cell_data[1]

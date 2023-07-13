@@ -15,6 +15,11 @@
         %td
           Patient imported via:
         %td 
-          = link_to "this migration", migration_path(@patient.migration)
+          = link_to "this migration", @patient.migration
+      %tr
+        %td
+          Import information:
+        %td 
+          = link_to "import row", @patient.import_row
 
 

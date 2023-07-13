@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :doctors, only: [:show]
   resources :patients, only: [:index, :show]
   resources :migrations, only: [:index, :new, :create, :show, :update]
-  resources :import_rows, only: [:edit, :update]
+  resources :import_rows, only: [:edit, :update, :show]
 
   # namespace :admin do
   #   get 'login', to: 'sessions#new'
