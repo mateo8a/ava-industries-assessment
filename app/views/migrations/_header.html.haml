@@ -10,11 +10,17 @@
 %div
   Migration created at:
   = @migration.created_at.to_fs(:db)
+%div
+  Time taken to parse the CSV:
+  = "#{@migration.statistics_hash["parsing_time"]} s"
+%div
+  Time taken so far to import records:
+  = "#{@migration.statistics_hash["import_time"]} s"
 %div 
   The original CSV:
   = link_to @migration.csv_file.file_blob.filename, rails_blob_path(@migration.csv_file.file, disposition: 'attachment')
 
-= render 'migrations/text_fields'
+-# = render 'migrations/text_fields'
 
 - if @migration.status == :assigning_headers
   %h4 CSV file info:

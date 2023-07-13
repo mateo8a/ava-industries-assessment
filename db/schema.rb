@@ -124,7 +124,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_12_050343) do
   end
 
   create_table "migrations", force: :cascade do |t|
-    t.integer "performance_statistics"
+    t.string "performance_statistics", default: "{}"
     t.text "description"
     t.integer "clinic_id", null: false
     t.integer "clinic_member_id", null: false

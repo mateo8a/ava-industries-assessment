@@ -42,6 +42,28 @@ class Migration < ApplicationRecord
     JSON.parse(self.import_headers_order)
   end
 
+  def statistics_hash
+    JSON.parse(self.performance_statistics)
+  end
+
+  def set_parsing_time(initial_time)
+    duration = Time.now - initial_time
+    self.performance_statistics = { parsing_time: duration }.to_json
+    self.save!
+  end
+
+  def add_import_time(initial_time)
+    duration = Time.now - initial_time
+    hash = statistics_hash
+    if hash["import_time"].nil?
+      hash["import_time"] = duration
+    else
+      hash["import_time"] += duration
+    end
+    self.performance_statistics = hash.to_json
+    self.save!
+  end
+
   private
 
   def create_import_rows
