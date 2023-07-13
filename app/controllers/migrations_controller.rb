@@ -34,7 +34,7 @@ class MigrationsController < ApplicationController
       @migration.create_import_data(params[:headers]) if params[:headers]
     when :in_progress
       act_on_row(params, :rows_to_import) { |row| row.import }
-      act_on_row(params, :rows_to_reject_valid){ |row| row.reject }
+      act_on_row(params, :rows_to_reject){ |row| row.reject }
     end
     redirect_to @migration
   end
