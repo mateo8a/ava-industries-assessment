@@ -1,22 +1,30 @@
-%h1 Edit import row
+.outermost-element
+  %h1 Edit import row
 
-%p 
-  Go back to 
-  = link_to "migration", migration_path(@import_row.migration)
+  %p 
+    Go back to 
+    = link_to "migration", migration_path(@import_row.migration)
 
-- unless @import_row.warnings == "{}"
-  The data in this record has issues.
-  = formatted_warnings(@import_row)
+  - unless @import_row.warnings == "{}"
+    #record-warning-show-import-row
+      The data in this record has issues:
+      = formatted_warnings(@import_row)
 
-= form_with(model: @import_row, scope: :row_data) do |f|
-  %table
-    - ImportHeader.all.each do |import_header|
-      - cell_data = cell_data(@import_row, import_header.id)
-      - name = import_header.patient_attribute
+  = form_with(model: @import_row, scope: :row_data) do |f|
+    %table
       %tr
-        %td
-          = label_tag(name)
-        %td
-          = cell_text_tag(name, cell_data)
-  
-  = f.submit "Update import row"
+        %th Patient attribute
+        %th Attribute value
+        %th Original value (can never be edited)
+      - ImportHeader.all.each do |import_header|
+        - cell_data = cell_data(@import_row, import_header.id, false)
+        - name = import_header.patient_attribute
+        %tr
+          %td
+            = label_tag(name)
+          %td
+            = cell_text_tag(name, cell_data[0])
+          %td
+            = cell_text_tag_disabled(name, cell_data[1], true)
+    
+    = f.submit "Update import row"

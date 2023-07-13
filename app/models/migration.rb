@@ -74,14 +74,12 @@ class Migration < ApplicationRecord
       csv_row.each_with_index do |csv_cell, j|
         import_header_id = headers_hash[j.to_s].to_i
         next if import_header_id == 0
-        import_cell = import_row.import_cells.create!(migration: self, import_header_id: import_header_id, raw_data: csv_cell)
-        # import_cell.check_if_valid_data
+        import_cell = import_row.import_cells.create!(migration: self, import_header_id: import_header_id, raw_data: csv_cell, original_data: csv_cell)
         import_header_ids.delete(import_header_id)
       end
-      if import_header_ids.any?
+      if import_header_ids.any? # create cells for the headers that weren't assigned to any column of the csv
         import_header_ids.each do |import_header_id|
-          import_cell = import_row.import_cells.create!(migration: self, import_header_id: import_header_id, raw_data: nil)
-          # import_cell.check_if_valid_data
+          import_cell = import_row.import_cells.create!(migration: self, import_header_id: import_header_id, raw_data: nil, original_data: nil)
         end
       end
     end

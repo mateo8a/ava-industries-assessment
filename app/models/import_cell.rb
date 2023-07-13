@@ -3,6 +3,7 @@ class ImportCell < ApplicationRecord
   belongs_to :import_row
   belongs_to :import_header
   after_save :check_if_valid_data, unless: :skip_valid_data_callback
+  attr_readonly :original_data
 
   delegate :clinic, to: :migration, allow_nil: false
   delegate :patient_attribute, to: :import_header

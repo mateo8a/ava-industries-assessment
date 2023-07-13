@@ -269,3 +269,12 @@ table {
 input[type=text] {
   min-width: 200px;
 }
+
+#record-warning-show-import-row {
+  padding: 20px;
+  margin-bottom: 10px;
+  background-color: #8d1b1b;
+  border-radius: 3%;
+  color: #d1d7d7;
+  width: 400px;
+}

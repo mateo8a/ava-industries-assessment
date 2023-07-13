@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_12_050343) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_13_220430) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -89,6 +89,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_12_050343) do
     t.string "raw_data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "original_data"
     t.index ["import_header_id"], name: "index_import_cells_on_import_header_id"
     t.index ["import_row_id"], name: "index_import_cells_on_import_row_id"
     t.index ["migration_id"], name: "index_import_cells_on_migration_id"

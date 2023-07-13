@@ -1,6 +1,10 @@
 module ImportRowsHelper
   def cell_text_tag(patient_attr, raw_data)
-    text_field_tag("row_data[#{patient_attr}", raw_data, disabled: disabled?(patient_attr))
+    cell_text_tag_disabled(patient_attr, raw_data, disabled?(patient_attr))
+  end
+
+  def cell_text_tag_disabled(patient_attr, raw_data, disabled)
+    text_field_tag("row_data[#{patient_attr}", raw_data, disabled: disabled)
   end
 
   def disabled?(patient_attr)
