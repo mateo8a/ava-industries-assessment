@@ -124,7 +124,7 @@ class ImportCell < ApplicationRecord
   end
 
   def validate_sex
-    if !["M", "F", "m", "f"].include?(raw_data)
+    if !["M", "F", "NB", "m", "f", "nb"].include?(raw_data)
       import_row.add_invalid_warning("sex") 
       return
     end

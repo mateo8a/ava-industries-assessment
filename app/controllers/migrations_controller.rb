@@ -10,7 +10,6 @@ class MigrationsController < ApplicationController
   end
 
   def create
-  initial_time = Time.now
     @migration = current_user.migrations.build(create_migration_params)
     if @migration.save
       uploaded_csv_file = params[:migration][:csv_file]
@@ -20,7 +19,6 @@ class MigrationsController < ApplicationController
       if csv_file_wrapper.save
         csv_file_wrapper.file.attach uploaded_csv_file
         csv_file_wrapper.set_attributes_from_file
-        @migration.set_parsing_time(initial_time)
         redirect_to @migration
       else
         render 'new', status: :unprocessable_entity
@@ -38,7 +36,7 @@ class MigrationsController < ApplicationController
     case @migration.status
     when :assigning_headers
       @migration.create_import_data(params[:headers]) if params[:headers]
-      @migration.add_import_time(initial_time)
+      @migration.set_parsing_time(initial_time)
     when :in_progress
       act_on_row(params, :rows_to_import) { |row| row.import }
       @migration.add_import_time(initial_time)
