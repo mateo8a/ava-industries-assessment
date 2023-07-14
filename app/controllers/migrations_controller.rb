@@ -32,14 +32,15 @@ class MigrationsController < ApplicationController
   end
 
   def update
-    initial_time = Time.now
     case @migration.status
     when :assigning_headers
-      @migration.create_import_data(params[:headers]) if params[:headers]
-      @migration.set_parsing_time(initial_time)
+      calculate_time(:parsing_time) do
+        @migration.create_import_data(params[:headers]) if params[:headers]
+      end
     when :in_progress
-      act_on_row(params, :rows_to_import) { |row| row.import }
-      @migration.add_import_time(initial_time)
+      calculate_time(:import_time) do
+        act_on_row(params, :rows_to_import) { |row| row.import }
+      end
       act_on_row(params, :rows_to_reject){ |row| row.reject }
     end
     redirect_to @migration
@@ -61,5 +62,12 @@ class MigrationsController < ApplicationController
 
   def create_migration_params
     params.require(:migration).permit(:name)
+  end
+
+  def calculate_time(time_type)
+    initial_time = Time.now
+    yield
+    @migration.set_parsing_time(initial_time) if time_type == :parsing_time
+    @migration.add_import_time(initial_time) if time_type == :import_time
   end
 end
